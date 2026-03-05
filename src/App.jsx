@@ -1,6 +1,17 @@
-import { motion } from "framer-motion";
+import { motion, useScroll } from "framer-motion";
 import { useEffect, useState } from "react";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+
+function ScrollProgress() {
+  const { scrollYProgress } = useScroll();
+
+  return (
+    <motion.div
+      className="fixed top-0 left-0 right-0 h-[3px] z-50 origin-left 
+      bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400"
+      style={{ scaleX: scrollYProgress }}
+    />
+  );
+}
 
 export default function App() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -15,6 +26,8 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen bg-[#0B1120] text-white overflow-x-hidden">
+
+      <ScrollProgress />
 
       {/* Animated Gradient Background */}
       <div className="fixed inset-0 -z-20 bg-gradient-to-br from-blue-900 via-[#0B1120] to-purple-900 animate-gradient" />
@@ -69,7 +82,7 @@ function Navbar() {
         const element = document.getElementById(sec);
         if (
           element &&
-          window.scrollY >= element.offsetTop - 200 &&
+          window.scrollY >= element.offsetTop - 150 &&
           window.scrollY < element.offsetTop + element.offsetHeight
         ) {
           setActive(sec);
@@ -83,17 +96,22 @@ function Navbar() {
   return (
     <nav className="fixed top-0 w-full backdrop-blur-md bg-black/30 border-b border-white/10 z-50">
       <div className="max-w-6xl mx-auto flex justify-between items-center p-4">
-        <div className="font-bold">Sarvani</div>
+        <div className="font-bold">Kunapuli Sarvani</div>
         <div className="flex gap-6 text-sm">
           {["home", "about", "skills", "experience", "projects", "contact"].map((item) => (
             <a
               key={item}
               href={`#${item}`}
-              className={`capitalize transition ${
-                active === item ? "text-blue-400" : "text-gray-400"
-              }`}
-            >
+              className={`relative capitalize transition ${
+                active === item ? "text-blue-400" : "text-gray-400 hover:text-white"
+                }`}
+              >
               {item}
+              {active === item && (
+                  <motion.div
+                    layoutId="navHighlight"
+                    className="absolute -bottom-1 left-0 right-0 h-[2px] bg-blue-400"
+                  />)}
             </a>
           ))}
         </div>
@@ -106,45 +124,110 @@ function Navbar() {
 
 function Hero() {
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center text-center px-6 relative">
+    <section className="min-h-screen flex items-center max-w-7xl mx-auto px-6">
 
-      <motion.h1
-      initial={{ opacity: 0, y: 60 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      className="text-5xl md:text-5xl font-extrabold tracking-tight mb-6"
-      >
-      Senior Software Engineer
-      </motion.h1>
+      <div className="grid md:grid-cols-2 gap-16 items-center">
 
-  <p className="max-w-3xl text-lg text-gray-300 leading-relaxed">
-    Building scalable streaming systems, distributed data architectures, and high-impact production platforms.
-  </p>
+        {/* LEFT */}
+        <div>
 
-      <FloatingBadges />
+          <p className="text-blue-400 text-2xl mb-4">
+            Senior Software Engineer
+          </p>
 
-      <div className="flex gap-8 mt-8 text-3xl">
-  <a
-    href="https://github.com/ksarvani2000"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="hover:text-blue-400 transition"
-  >
-    <FaGithub className="cursor-pointer" />
-  </a>
+          <h1 className="text-5xl md:text-3xl font-bold leading-tight mb-6">
+            Designing scalable distributed systems and full-stack platforms that power high-traffic applications used by millions worldwide.
+          </h1>
 
-  <a
-    href="https://www.linkedin.com/in/sarvani-kunapuli-903094190/"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="hover:text-blue-400 transition"
-  >
-    <FaLinkedin className="cursor-pointer" />
-  </a>
+          <p className="text-gray-400 mb-8 text-lg">
+            Senior Software Engineer with experience building production systems, microservices, and data integrations across large-scale platforms.
+          </p>
+
+          <div className="flex gap-6">
+
+            <a
+              href="/Sarvani_Kunapuli_Resume.pdf"
+              target="_blank"
+              className="bg-blue-500 px-6 py-3 rounded-lg hover:bg-blue-600"
+            >
+              Resume
+            </a>
+
+            <a
+              href="https://github.com/ksarvani2000"
+              target="_blank"
+              className="border border-gray-500 px-6 py-3 rounded-lg hover:border-blue-400"
+            >
+              Github
+            </a>
+
+          </div>
+
+        </div>
+
+        {/* RIGHT */}
+        <div className="relative flex justify-center">
+
+  {/* glow */}
+  <div className="absolute w-80 h-80 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 blur-3xl opacity-30"></div>
+
+  {/* image */}
+  <img
+    src="/profile.jpeg"
+    alt="Sarvani"
+    className="relative w-72 h-72 rounded-full object-cover border-4 border-white/10"
+  />
+
 </div>
-    </div>
+
+      </div>
+    </section>
   );
 }
+
+// function Hero() {
+//   return (
+//     <div className="min-h-screen flex flex-col justify-center items-center text-center px-6 relative">
+
+//       <motion.h1
+//       initial={{ opacity: 0, y: 60 }}
+//       animate={{ opacity: 1, y: 0 }}
+//       transition={{ duration: 0.8 }}
+//       className="text-5xl md:text-5xl font-extrabold tracking-tight mb-6"
+//       >
+//       Senior Software Engineer
+//       </motion.h1>
+
+//   <p className="max-w-3xl text-lg text-gray-300 leading-relaxed">
+//     Building scalable streaming systems, distributed data architectures, and high-impact production platforms.
+//   </p>
+
+//       <FloatingBadges />
+
+//       <div className="flex gap-8 mt-8 text-3xl">
+//   <a
+//     href="https://github.com/ksarvani2000"
+//     target="_blank"
+//     rel="noopener noreferrer"
+//     className="hover:text-blue-400 transition"
+//   >
+//     <FaGithub className="cursor-pointer" />
+//   </a>
+
+//   <a
+//     href="https://www.linkedin.com/in/sarvani-kunapuli-903094190/"
+//     target="_blank"
+//     rel="noopener noreferrer"
+//     className="hover:text-blue-400 transition"
+//   >
+//     <FaLinkedin className="cursor-pointer" />
+//   </a>
+// </div>
+//     </div>
+//   );
+// }
+
+
 
 /* ---------------- FLOATING TECH ---------------- */
 
@@ -169,11 +252,76 @@ function FloatingBadges() {
 
 /* ---------------- ABOUT ---------------- */
 
+// function About() {
+//   return (
+//     <ContentBlock title="About Me">
+//       Senior Software Engineer specializing in distributed systems, streaming platforms, and AdTech monetization at global scale. I’ve led zero-downtime data migrations, post-acquisition system integrations, and cross-platform ad architectures across Web and CTV ecosystems. My work has powered 600+ competition migrations, 60M+ monthly ad impressions, and measurable revenue growth. I focus on building reliable, scalable systems that drive real business impact.
+//     </ContentBlock>
+//   );
+// }
+
 function About() {
   return (
-    <ContentBlock title="About Me">
-      Senior Software Engineer specializing in distributed systems, streaming platforms, and AdTech monetization at global scale. I’ve led zero-downtime data migrations, post-acquisition system integrations, and cross-platform ad architectures across Web and CTV ecosystems. My work has powered 600+ competition migrations, 60M+ monthly ad impressions, and measurable revenue growth. I focus on building reliable, scalable systems that drive real business impact.
-    </ContentBlock>
+    <section className="max-w-6xl mx-auto px-6">
+
+      <div className="grid md:grid-cols-2 gap-16 items-center">
+
+        {/* LEFT CONTENT */}
+        <div>
+
+          <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            About Me
+          </h2>
+
+          <p className="text-gray-300 leading-relaxed mb-6">
+            I'm a Senior Software Engineer building scalable streaming
+            systems, distributed architectures and AdTech monetization
+            platforms used by millions of viewers worldwide.
+          </p>
+
+          <p className="text-gray-400 leading-relaxed">
+            At DAZN, I’ve worked on large-scale production systems including zero-downtime data migrations, third-party platform integrations, and cross-platform application architectures across Web and Connected TV devices. 
+            My focus is building reliable, scalable systems that deliver measurable business impact.
+          </p>
+
+        </div>
+
+
+        {/* RIGHT STATS */}
+        <div className="grid grid-cols-2 gap-8">
+
+          <StatCard value="600+" label="Competitions Migrated" />
+          <StatCard value="60M+" label="Monthly Ad Impressions" />
+          <StatCard value="80%" label="Incident Reduction" />
+          <StatCard value="4+" label="Years Experience" />
+
+        </div>
+
+      </div>
+
+    </section>
+  );
+}
+
+function StatCard({ value, label }) {
+  return (
+
+    <div className="p-[1px] rounded-xl bg-gradient-to-r from-blue-500/30 to-purple-500/30">
+
+      <div className="bg-[#0B1120] rounded-xl p-6 text-center">
+
+        <p className="text-3xl font-bold text-blue-400">
+          {value}
+        </p>
+
+        <p className="text-sm text-gray-400 mt-2">
+          {label}
+        </p>
+
+      </div>
+
+    </div>
+
   );
 }
 
@@ -348,169 +496,348 @@ function CompanyTimeline({ company, subtitle, roles }) {
 /* ---------------- PROJECTS ---------------- */
 
 function Projects() {
-  const projectList = [
+
+  const projects = [
     {
-      title: "Foxtel-Won Integration Bridge",
+      title: "Foxtel–WON Integration Bridge",
       description:
-        "Designed and implemented a Spring Boot microservices integration bridge to synchronize DAZN event metadata with Kayo’s Airtable planning system post-acquisition, ensuring seamless cross-platform event planning and operational continuity",
-      tech: ["Java", "Spring Boot", "Microservices", "Airtable Integration", "On-Prem deployment", "Oracle"],
-      // github: "#",
-      impact: "Enabled reliable metric synchronization across streaming platforms."
+        "Designed and implemented a Spring Boot microservices integration bridge to synchronize DAZN event metadata with Kayo’s Airtable planning system post-acquisition.",
+      impact:
+        "Enabled reliable cross-platform event planning across DAZN and Foxtel ecosystems.",
+      tech: ["Java","Spring Boot","Microservices","Airtable","Oracle"]
     },
     {
-      title: "SportRadar Migration System",
+      title: "SportRadar Competition Migration",
       description:
-        "Implemented a zero-downtime migration of 600+ competitions from Stats Perform to SportRadar, preserving downstream system stability. Built a React + Spring Boot full-stack management tool to support CRUD operations, validation, and operational oversight during the transition.",
-      tech: ["Java", "Spring Boot", "AWS", "Event-Driven Systems"],
-      // github: "#",
-      impact: "Designed schema mapping and validation mechanisms to ensure accurate competition data alignment across distributed services."
+        "Zero-downtime migration of 600+ competitions from Stats Perform to SportRadar across distributed services.",
+      impact:
+        "Designed schema mapping and validation systems ensuring production stability.",
+      tech: ["Java","Spring Boot","AWS","Event-driven","React"]
     },
     {
-      title: "Google Ad-manager Integration",
+      title: "Google Ad Manager Integration",
       description:
-        "Architected and delivered Google Ad Manager (GAM) SDK & API integration for client-side ad calls across web and connected TV platforms (Tizen, webOS, Vidaa, Xbox One, SkyQ), driving a 60% uplift in ad impressions and revenue globally.",
-      tech: ["React", "JavaScript", "AdTech", "Google Ad Manager"],
-      // github: "#",
-      impact: "Increased Ad Impressions & Ad revenue by 60%"
+        "Delivered Google Ad Manager SDK and API integrations across Web and Connected TV platforms.",
+      impact:
+        "Increased ad impressions and revenue by 60% globally.",
+      tech: ["React","JavaScript","AdTech","GAM"]
     },
     {
-      title: "Banner Ads Integration",
+      title: "Cross-Platform Banner Ads System",
       description:
-        "Engineered cross-platform banner ad placements across Web and Connected TV (Tizen, webOS, Vidaa, Xbox, SkyQ) using Google Publisher Tag (GPT) and Google Ad Manager (GAM), supporting multi-model campaigns enabling scalable monetization without disrupting user experience.",
-      tech: ["React", "Typescript", "GPT", "GAM"],
-      // github: "#",
-      impact: "Enabled new monetization surfaces supporting CPM, CPC, and CPA campaigns while preserving seamless video playback and viewer retention"
+        "Engineered scalable banner ad placements across Web and CTV devices using GPT and GAM.",
+      impact:
+        "Enabled new monetization surfaces across multiple devices.",
+      tech: ["React","Typescript","GPT","GAM"]
     },
     {
-      title: "Sponsorship Ads Integration",
+      title: "Sponsorship Ads Platform",
       description:
-        "Designed and Implemented region-targeted sponsorship ad placements across home and sub-pages on CTV(Tizen, webOS, Vidaa, Xbox, SkyQ) and Web platforms, integrating Google IMA SDK to deliver ~60M monthly impressions without impacting video playback experience.",
-      tech: ["React", "Typescript", "GPT", "GAM"],
-      // github: "#",
-      impact: "Improved ad engagement by 30% and increased sponsorship revenue by 15% through strategic"
+        "Implemented region-targeted sponsorship ads across Web and CTV using Google IMA SDK.",
+      impact:
+        "Delivered ~60M monthly impressions and improved engagement by 30%.",
+      tech: ["React","Typescript","IMA SDK","AdTech"]
     }
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-6">
-      <h2 className="text-4xl font-bold mb-16 text-center bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-        Projects
+    <section className="max-w-7xl mx-auto px-6">
+
+      {/* Title */}
+      <h2 className="text-4xl font-bold text-center mb-20 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+        Engineering Projects
       </h2>
 
-      <div className="grid md:grid-cols-2 gap-12">
-        {projectList.map((project, index) => (
+      {/* Cards */}
+      <div className="grid md:grid-cols-2 gap-10">
+
+        {projects.map((project,index) => (
+
           <motion.div
             key={index}
-            whileHover={{ y: -10 }}
-            className="group bg-white/5 border border-white/10 rounded-2xl p-8 shadow-xl transition duration-300 hover:border-blue-400/40"
+            whileHover={{ y: -8 }}
+            className="group relative p-[1px] rounded-xl bg-gradient-to-r from-blue-500/30 to-purple-500/30"
           >
-            <h3 className="text-2xl font-semibold mb-4 group-hover:text-blue-400 transition">
-              {project.title}
-            </h3>
 
-            <p className="text-gray-300 mb-4">
-              {project.description}
-            </p>
+            <div className="bg-[#0B1120] rounded-xl p-8 h-full">
 
-            <p className="text-sm text-blue-300 mb-6">
-              {project.impact}
-            </p>
+              {/* Title */}
+              <h3 className="text-2xl font-semibold mb-4 group-hover:text-blue-400 transition">
+                {project.title}
+              </h3>
 
-            {/* Tech Stack */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {project.tech.map((t, i) => (
-                <span
-                  key={i}
-                  className="px-3 py-1 text-xs bg-blue-500/10 border border-blue-400/20 rounded-full"
-                >
-                  {t}
-                </span>
-              ))}
+              {/* Description */}
+              <p className="text-gray-300 mb-4 leading-relaxed">
+                {project.description}
+              </p>
+
+              {/* Impact */}
+              <p className="text-blue-400 text-sm mb-6">
+                {project.impact}
+              </p>
+
+              {/* Tech */}
+              <div className="flex flex-wrap gap-2">
+                {project.tech.map((t,i)=>(
+                  <span
+                    key={i}
+                    className="px-3 py-1 text-xs rounded-full bg-blue-500/10 border border-blue-400/20"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+
             </div>
 
-            <div className="flex gap-4">
-              <a
-                href={project.github}
-                target="_blank"
-                className="text-blue-400 text-sm hover:underline"
-              >
-                View Code →
-              </a>
-            </div>
           </motion.div>
+
         ))}
+
       </div>
-    </div>
+    </section>
   );
 }
+
+// function Projects() {
+//   const projectList = [
+//     {
+//       title: "Foxtel-Won Integration Bridge",
+//       description:
+//         "Designed and implemented a Spring Boot microservices integration bridge to synchronize DAZN event metadata with Kayo’s Airtable planning system post-acquisition, ensuring seamless cross-platform event planning and operational continuity",
+//       tech: ["Java", "Spring Boot", "Microservices", "Airtable Integration", "On-Prem deployment", "Oracle"],
+//       // github: "#",
+//       impact: "Enabled reliable metric synchronization across streaming platforms."
+//     },
+//     {
+//       title: "SportRadar Migration System",
+//       description:
+//         "Implemented a zero-downtime migration of 600+ competitions from Stats Perform to SportRadar, preserving downstream system stability. Built a React + Spring Boot full-stack management tool to support CRUD operations, validation, and operational oversight during the transition.",
+//       tech: ["Java", "Spring Boot", "AWS", "Event-Driven Systems"],
+//       // github: "#",
+//       impact: "Designed schema mapping and validation mechanisms to ensure accurate competition data alignment across distributed services."
+//     },
+//     {
+//       title: "Google Ad-manager Integration",
+//       description:
+//         "Architected and delivered Google Ad Manager (GAM) SDK & API integration for client-side ad calls across web and connected TV platforms (Tizen, webOS, Vidaa, Xbox One, SkyQ), driving a 60% uplift in ad impressions and revenue globally.",
+//       tech: ["React", "JavaScript", "AdTech", "Google Ad Manager"],
+//       // github: "#",
+//       impact: "Increased Ad Impressions & Ad revenue by 60%"
+//     },
+//     {
+//       title: "Banner Ads Integration",
+//       description:
+//         "Engineered cross-platform banner ad placements across Web and Connected TV (Tizen, webOS, Vidaa, Xbox, SkyQ) using Google Publisher Tag (GPT) and Google Ad Manager (GAM), supporting multi-model campaigns enabling scalable monetization without disrupting user experience.",
+//       tech: ["React", "Typescript", "GPT", "GAM"],
+//       // github: "#",
+//       impact: "Enabled new monetization surfaces supporting CPM, CPC, and CPA campaigns while preserving seamless video playback and viewer retention"
+//     },
+//     {
+//       title: "Sponsorship Ads Integration",
+//       description:
+//         "Designed and Implemented region-targeted sponsorship ad placements across home and sub-pages on CTV(Tizen, webOS, Vidaa, Xbox, SkyQ) and Web platforms, integrating Google IMA SDK to deliver ~60M monthly impressions without impacting video playback experience.",
+//       tech: ["React", "Typescript", "GPT", "GAM"],
+//       // github: "#",
+//       impact: "Improved ad engagement by 30% and increased sponsorship revenue by 15% through strategic"
+//     }
+//   ];
+
+//   return (
+//     <div className="max-w-7xl mx-auto px-6">
+//       <h2 className="text-4xl font-bold mb-16 text-center bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+//         Projects
+//       </h2>
+
+//       <div className="grid md:grid-cols-2 gap-12">
+//         {projectList.map((project, index) => (
+//           <motion.div
+//             key={index}
+//             whileHover={{ y: -10 }}
+//             className="group bg-white/5 border border-white/10 rounded-2xl p-8 shadow-xl transition duration-300 hover:border-blue-400/40"
+//           >
+//             <h3 className="text-2xl font-semibold mb-4 group-hover:text-blue-400 transition">
+//               {project.title}
+//             </h3>
+
+//             <p className="text-gray-300 mb-4">
+//               {project.description}
+//             </p>
+
+//             <p className="text-sm text-blue-300 mb-6">
+//               {project.impact}
+//             </p>
+
+//             {/* Tech Stack */}
+//             <div className="flex flex-wrap gap-2 mb-6">
+//               {project.tech.map((t, i) => (
+//                 <span
+//                   key={i}
+//                   className="px-3 py-1 text-xs bg-blue-500/10 border border-blue-400/20 rounded-full"
+//                 >
+//                   {t}
+//                 </span>
+//               ))}
+//             </div>
+
+//             <div className="flex gap-4">
+//               <a
+//                 href={project.github}
+//                 target="_blank"
+//                 className="text-blue-400 text-sm hover:underline"
+//               >
+//                 View Code →
+//               </a>
+//             </div>
+//           </motion.div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }
 
 /* ---------------- CONTACT ---------------- */
 
 function Connect() {
   return (
-    <section className="py-32 px-6 bg-black/30 backdrop-blur-md border-t border-white/10">
-      <div className="max-w-4xl mx-auto text-center">
+    <section className="py-32 px-6">
+
+      <div className="max-w-5xl mx-auto text-center">
 
         {/* Heading */}
         <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-          Let’s Connect
+          Let's Build Something Great
         </h2>
 
-        {/* Subtext */}
-        <p className="text-gray-300 mb-10 text-lg max-w-2xl mx-auto">
+        <p className="text-gray-300 mb-12 text-lg">
           I’m open to impactful engineering opportunities across streaming,
-          distributed systems, and high-scale Web + CTV platforms.
+          distributed systems and AdTech platforms.
         </p>
 
-        {/* Contact Info */}
-        <div className="space-y-4 text-lg mb-10">
-          <a
-            href="mailto:saisarvani.kunapuli@gmail.com"
-            className="block hover:text-blue-400 transition"
-          >
-            📩 saisarvani.kunapuli@gmail.com
-          </a>
+        {/* Contact card */}
+        <div className="p-[1px] rounded-2xl bg-gradient-to-r from-blue-500/30 to-purple-500/30">
 
-          <p className="text-gray-400">
-            📍 Hyderabad, India
-          </p>
+          <div className="bg-[#0B1120] rounded-2xl p-12">
+
+            <div className="space-y-6 text-lg">
+
+              <a
+                href="mailto:saisarvani.kunapuli@gmail.com"
+                target="_blank"
+                className="block hover:text-blue-400 transition"
+              >
+                📩 saisarvani.kunapuli@gmail.com
+              </a>
+
+              <p className="text-gray-400">
+                📍 Hyderabad, India
+              </p>
+
+            </div>
+
+            {/* Buttons */}
+            <div className="flex flex-wrap justify-center gap-6 mt-10">
+
+              <a
+                href="https://github.com/ksarvani2000"
+                target="_blank"
+                className="px-6 py-3 rounded-full border border-white/20 hover:border-blue-400 hover:text-blue-400 transition"
+              >
+                GitHub
+              </a>
+
+              <a
+                href="https://www.linkedin.com/in/sarvani-kunapuli-903094190/"
+                target="_blank"
+                className="px-6 py-3 rounded-full border border-white/20 hover:border-purple-400 hover:text-purple-400 transition"
+              >
+                LinkedIn
+              </a>
+
+              <a
+                href="/Sarvani_Kunapuli_Resume.pdf"
+                target="_blank"
+                className="px-6 py-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 hover:opacity-90 transition font-medium"
+              >
+                View Resume
+              </a>
+
+            </div>
+
+          </div>
+
         </div>
 
-        {/* Buttons */}
-        <div className="flex flex-wrap justify-center gap-6">
-
-          <a
-            href="https://www.linkedin.com/in/sarvani-kunapuli-903094190/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-6 py-3 rounded-full border border-white/20 hover:border-violet-400 hover:text-violet-400 transition font-medium"
-          >
-            LinkedIn
-          </a>
-
-          <a
-            href="https://github.com/ksarvani2000"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-6 py-3 rounded-full border border-white/20 hover:border-blue-400 hover:text-blue-400 transition font-medium"
-          >
-            GitHub
-          </a>
-
-          <a
-            href="/Sarvani_Kunapuli_Resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-6 py-3 rounded-full border border-white/20 hover:border-purple-400 hover:text-purple-400 transition font-medium"
-          >
-            View My Resume
-          </a>
-
-        </div>
       </div>
     </section>
   );
 }
+
+// function Connect() {
+//   return (
+//     <section className="py-32 px-6 bg-black/30 backdrop-blur-md border-t border-white/10">
+//       <div className="max-w-4xl mx-auto text-center">
+
+//         {/* Heading */}
+//         <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+//           Let’s Connect
+//         </h2>
+
+//         {/* Subtext */}
+//         <p className="text-gray-300 mb-10 text-lg max-w-2xl mx-auto">
+//           I’m open to impactful engineering opportunities across streaming,
+//           distributed systems, and high-scale Web + CTV platforms.
+//         </p>
+
+//         {/* Contact Info */}
+//         <div className="space-y-4 text-lg mb-10">
+//           <a
+//             href="mailto:saisarvani.kunapuli@gmail.com"
+//             className="block hover:text-blue-400 transition"
+//           >
+//             📩 saisarvani.kunapuli@gmail.com
+//           </a>
+
+//           <p className="text-gray-400">
+//             📍 Hyderabad, India
+//           </p>
+//         </div>
+
+//         {/* Buttons */}
+//         <div className="flex flex-wrap justify-center gap-6">
+
+//           <a
+//             href="https://www.linkedin.com/in/sarvani-kunapuli-903094190/"
+//             target="_blank"
+//             rel="noopener noreferrer"
+//             className="px-6 py-3 rounded-full border border-white/20 hover:border-violet-400 hover:text-violet-400 transition font-medium"
+//           >
+//             LinkedIn
+//           </a>
+
+//           <a
+//             href="https://github.com/ksarvani2000"
+//             target="_blank"
+//             rel="noopener noreferrer"
+//             className="px-6 py-3 rounded-full border border-white/20 hover:border-blue-400 hover:text-blue-400 transition font-medium"
+//           >
+//             GitHub
+//           </a>
+
+//           <a
+//             href="/Sarvani_Kunapuli_Resume.pdf"
+//             target="_blank"
+//             rel="noopener noreferrer"
+//             className="px-6 py-3 rounded-full border border-white/20 hover:border-purple-400 hover:text-purple-400 transition font-medium"
+//           >
+//             View My Resume
+//           </a>
+
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
 
 /* ---------------- REUSABLE ---------------- */
 
